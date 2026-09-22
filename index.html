@@ -205,6 +205,23 @@
   li.d{background:var(--mid-soft)}
   li.w{background:var(--frost-soft)}
 
+  /* подпись целевого месяца и доли бюджета в рекламной карточке */
+  .target{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    margin:-4px 0 10px;font-size:12.5px;color:var(--muted);
+  }
+  .target .to{color:var(--ink-2)}
+  .target .to b{color:var(--ink);font-weight:600}
+  .target .bud{
+    font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+  ol.items li.isnew .name{font-weight:600}
+  .newbadge{
+    display:inline-block;margin-left:7px;padding:1px 6px;border-radius:999px;
+    font-size:10px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    background:var(--ink);color:var(--ground);vertical-align:1px;
+  }
+
   .pivot,.thin-note{
     margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);
     font-size:12.5px;line-height:1.4;color:var(--ink-2);
@@ -412,7 +429,23 @@
 
   <!-- ================= ВКЛАДКА 2 ================= -->
   <section id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
-    <p class="dek">План запуска контекстной рекламы, построенный на той же базе заказов. Календарь задаёт не общий поток заказов, а <b>приток новых покупателей</b> — только на него реклама и может влиять.</p>
+    <p class="dek">Тот же год, но с другой стороны: не «что покупают», а <b>что рекламировать</b>. Кампании нужно 3–5 недель, чтобы выйти на мощность, поэтому в каждом месяце вы работаете на спрос <b>следующего</b> — карточки уже сдвинуты на этот шаг.</p>
+
+    <section class="sec">
+      <div class="sec-head">
+        <h2>Рекламный год одним взглядом</h2>
+        <p>Что откручивается в каждом месяце. Сравните с той же полосой на вкладке «Статистика заказов» — она сдвинута на месяц вперёд.</p>
+      </div>
+      <div class="strip-scroll"><div class="strip" id="adstrip"></div></div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <h2>Что запускать в каждом месяце</h2>
+        <p>Пометка «новое» — позиция, которой не было в работе месяцем раньше: под неё нужны новые группы объявлений и посадочные.</p>
+      </div>
+      <div class="months" id="admonths"></div>
+    </section>
 
     <div class="tiles">
       <div class="tile"><div class="v">1 614</div><div class="k">уникальных покупателей за 4,5 года</div></div>
@@ -651,6 +684,100 @@
       card.appendChild(tn);
     }
     months.appendChild(card);
+  });
+
+  /* ---- рекламный календарь: сдвиг на месяц вперёд ----
+     кампании выходят на мощность за 3–5 недель, поэтому в месяце M
+     откручивается то, что купят в M+1. Берём тот же YEAR, чтобы
+     рекламный план не смог разойтись со статистикой. */
+  var AD_NOTE = {
+    1:"Добавляем летнюю группу — бейсболки пойдут уже в марте.",
+    2:"Лето разворачивается полностью: панамки, косынки, подростковые бейсболки.",
+    5:"Полная смена ассортимента: летнее выключаем, весь топ следующего месяца — зимний.",
+    6:"Возвращаем шапки с х/б подкладом — август на них и держится.",
+    7:"Появляется утеплённое: флис и шерстяные варежки.",
+    8:"Синтепон и комплекты — под пик октября.",
+    10:"Варежки под декабрь. Дальше только ретаргет по базе.",
+    11:"Собираем весеннюю кампанию: январь снова про шапки с подкладом."
+  };
+
+  var adstrip = document.getElementById("adstrip");
+  var admonths = document.getElementById("admonths");
+
+  YEAR.forEach(function(mo, i){
+    var tgt = YEAR[(i + 1) % 12];
+    var prevNames = mo.items.map(function(it){ return it[0]; });
+    var budget = PLAN[i][1], phase = PLAN[i][3];
+
+    /* полоса */
+    var col = document.createElement("div");
+    col.className = "strip-col";
+    var lab = document.createElement("div");
+    lab.className = "mlabel"; lab.textContent = mo.s;
+    col.appendChild(lab);
+    tgt.items.forEach(function(it, n){
+      var t = document.createElement("div");
+      t.className = "tick " + it[1];
+      t.dataset.cat = it[1];
+      t.title = "Рекламируем в " + mo.m.toLowerCase() + " · " + (n+1) + ". " + it[0]
+              + " — спрос в " + tgt.m.toLowerCase();
+      col.appendChild(t);
+    });
+    var mk = document.createElement("div");
+    mk.className = "thin-mark solid";
+    col.appendChild(mk);
+    adstrip.appendChild(col);
+
+    /* карточка */
+    var card = document.createElement("article");
+    card.className = "month";
+
+    var head = document.createElement("header");
+    var h = document.createElement("h3"); h.textContent = mo.m;
+    var mix = document.createElement("div");
+    mix.className = "mix"; mix.title = "состав рекламируемого ассортимента";
+    tgt.items.forEach(function(it){
+      var d = document.createElement("span"); d.className = it[1]; mix.appendChild(d);
+    });
+    head.appendChild(h); head.appendChild(mix);
+    card.appendChild(head);
+
+    var tg = document.createElement("div");
+    tg.className = "target";
+    tg.innerHTML = '<span class="to">под спрос в <b>' + tgt.m.toLowerCase() + '</b></span>'
+                 + '<span class="bud">' + budget + '% бюджета</span>';
+    card.appendChild(tg);
+
+    var ol = document.createElement("ol");
+    ol.className = "items";
+    tgt.items.forEach(function(it, n){
+      var isNew = prevNames.indexOf(it[0]) === -1;
+      var li = document.createElement("li");
+      li.className = it[1] + (isNew ? " isnew" : "");
+      li.dataset.cat = it[1];
+      var r = document.createElement("span");
+      r.className = "rank"; r.textContent = (n + 1);
+      var nm = document.createElement("span");
+      nm.className = "name"; nm.textContent = it[0];
+      if (isNew){
+        var b = document.createElement("span");
+        b.className = "newbadge"; b.textContent = "новое";
+        b.title = "не было в работе месяцем раньше — нужны новые группы и посадочная";
+        nm.appendChild(b);
+      }
+      li.appendChild(r); li.appendChild(nm);
+      ol.appendChild(li);
+    });
+    card.appendChild(ol);
+
+    var p = document.createElement("p");
+    p.className = "pivot";
+    p.innerHTML = AD_NOTE[i]
+      ? "<b>Перелом.</b> " + AD_NOTE[i]
+      : "<b>Фаза.</b> " + phase.charAt(0).toUpperCase() + phase.slice(1) + ".";
+    card.appendChild(p);
+
+    admonths.appendChild(card);
   });
 
   /* ---- фильтр по ассортименту ---- */
