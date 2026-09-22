@@ -426,6 +426,13 @@
   <section id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
     <p class="dek">Та же статистика заказов, но <b>сдвинутая на две недели назад</b>: дата каждого заказа уменьшена на 14 дней, месяцы пересобраны заново. Поэтому карточка месяца отвечает прямо — <b>что рекламировать в этом месяце</b>, чтобы поймать спрос с 15-го числа по 14-е число следующего.</p>
 
+    <fieldset class="legend" id="adlegend">
+      <legend>Ассортимент</legend>
+      <button type="button" class="chip s" data-cat="s" aria-pressed="true"><span class="swatch"></span>Лето <span class="n" data-adcount="s"></span></button>
+      <button type="button" class="chip d" data-cat="d" aria-pressed="true"><span class="swatch"></span>Демисезон <span class="n" data-adcount="d"></span></button>
+      <button type="button" class="chip w" data-cat="w" aria-pressed="true"><span class="swatch"></span>Зима <span class="n" data-adcount="w"></span></button>
+    </fieldset>
+
     <section class="sec">
       <div class="sec-head">
         <h2>Рекламный год одним взглядом</h2>
@@ -667,13 +674,17 @@
     ["ноябрь","спад",'Плавное снижение. Декабрь — только ретаргет по базе.',0]
   ];
 
-  /* ---- счётчики в легенде ---- */
-  var tally = {s:0,d:0,w:0};
-  YEAR.forEach(function(mo){ mo.items.forEach(function(it){ tally[it[1]]++; }); });
-  Object.keys(tally).forEach(function(k){
-    var el = document.querySelector('[data-count="'+k+'"]');
-    if (el) el.textContent = tally[k];
-  });
+  /* ---- счётчики в легендах: сколько мест из 60 держит каждый ассортимент ---- */
+  function fillCounts(data, attr){
+    var tally = {s:0, d:0, w:0};
+    data.forEach(function(mo){ mo.items.forEach(function(it){ tally[it[1]]++; }); });
+    Object.keys(tally).forEach(function(k){
+      var el = document.querySelector('[' + attr + '="' + k + '"]');
+      if (el) el.textContent = tally[k];
+    });
+  }
+  fillCounts(YEAR, "data-count");
+  fillCounts(AD_YEAR, "data-adcount");
 
   /* ---- полоса года ---- */
   var strip = document.getElementById("strip");
@@ -826,20 +837,34 @@
   /* ---- фильтр по ассортименту ---- */
   var off = Object.create(null);
   var root = document.querySelector(".wrap");
-  document.getElementById("legend").addEventListener("click", function(e){
-    var btn = e.target.closest(".chip");
-    if (!btn) return;
-    var cat = btn.dataset.cat;
-    off[cat] = !off[cat];
-    btn.setAttribute("aria-pressed", off[cat] ? "false" : "true");
+
+  function applyFilter(){
     var any = false, k;
     for (k in off) if (off[k]) any = true;
     root.classList.toggle("filtered", any);
+    /* обе легенды показывают одно состояние — фильтр общий на страницу */
+    var chips = document.querySelectorAll(".chip[data-cat]");
+    for (var c = 0; c < chips.length; c++){
+      chips[c].setAttribute("aria-pressed", off[chips[c].dataset.cat] ? "false" : "true");
+    }
     var nodes = document.querySelectorAll("[data-cat]");
-    for (var i=0;i<nodes.length;i++){
+    for (var i = 0; i < nodes.length; i++){
+      if (nodes[i].classList.contains("chip")) continue;
       if (off[nodes[i].dataset.cat]) nodes[i].dataset.off = "1";
       else delete nodes[i].dataset.off;
     }
+  }
+
+  ["legend", "adlegend"].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("click", function(e){
+      var btn = e.target.closest(".chip");
+      if (!btn) return;
+      var cat = btn.dataset.cat;
+      off[cat] = !off[cat];
+      applyFilter();
+    });
   });
 
   /* ---- столбики: новые покупатели ---- */
