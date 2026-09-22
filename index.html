@@ -215,19 +215,7 @@
   .target .bud{
     font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;
   }
-  .cnt{
-    font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
-    padding:3px 9px;border-radius:999px;background:var(--ink);color:var(--ground);
-    white-space:nowrap;
-  }
-  .cnt.zero{background:var(--flat-soft);color:var(--muted)}
-  .nostart{
-    margin:0;padding:10px 0 2px;font-size:13.5px;color:var(--muted);line-height:1.45;
-  }
 
-  /* столбец нагрузки по запускам: растёт снизу */
-  .startbox{height:92px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px}
-  .startbase{height:3px;border-radius:2px;background:var(--line);}
 
   .pivot,.thin-note{
     margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);
@@ -436,20 +424,20 @@
 
   <!-- ================= ВКЛАДКА 2 ================= -->
   <section id="panel-plan" role="tabpanel" aria-labelledby="tab-plan" hidden>
-    <p class="dek">Та же статистика заказов, но <b>сдвинутая на две недели назад</b>: дата каждого заказа уменьшена на 14 дней, месяцы пересобраны заново. Бакет месяца собирает спрос с 15-го числа по 14-е число следующего — ровно то, что успевает поймать кампания, стартовавшая в начале месяца. В карточке только новые старты: запущенное раньше дальше просто крутится.</p>
+    <p class="dek">Та же статистика заказов, но <b>сдвинутая на две недели назад</b>: дата каждого заказа уменьшена на 14 дней, месяцы пересобраны заново. Поэтому карточка месяца отвечает прямо — <b>что рекламировать в этом месяце</b>, чтобы поймать спрос с 15-го числа по 14-е число следующего.</p>
 
     <section class="sec">
       <div class="sec-head">
-        <h2>Нагрузка по запускам за год</h2>
-        <p>Высота столбца — сколько товаров стартует в этом месяце. Пустой столбец означает, что запускать нечего: состав не изменился, работают прежние кампании.</p>
+        <h2>Рекламный год одним взглядом</h2>
+        <p>Каждый столбец — месяц, каждая клетка — одна из пяти рекламируемых позиций, сверху первая. Сравните с той же полосой на вкладке «Статистика заказов»: она сдвинута на две недели.</p>
       </div>
       <div class="strip-scroll"><div class="strip" id="adstrip"></div></div>
     </section>
 
     <section class="sec">
       <div class="sec-head">
-        <h2>Что стартует в каждом месяце</h2>
-        <p>Под каждый товар в списке нужны свои группы объявлений и посадочная. Позиция на границе топ-5 может выходить и возвращаться — тогда кампанию не создают заново, а включают.</p>
+        <h2>Что рекламировать в каждом месяце</h2>
+        <p>Пять позиций, на которые в этом месяце должна идти реклама, по убыванию спроса.</p>
       </div>
       <div class="months" id="admonths"></div>
     </section>
@@ -753,32 +741,19 @@
      откручивается то, что купят в M+1. Берём тот же YEAR, чтобы
      рекламный план не смог разойтись со статистикой. */
   var AD_NOTE = {
-    2:"Лето входит сразу тремя позициями, и бейсболка забирает первое место.",
-    4:"Единственный месяц без запусков: состав тот же, что в апреле.",
-    5:"Разворот к зиме начинается уже здесь — в топ входят перчатки и шерсть.",
-    6:"Самый тяжёлый месяц: лето выключаем целиком, возвращаются шапки.",
-    8:"Утеплённое в полном составе: флис, шерсть, синтепон.",
-    11:"Стартуем под январь: шапки с подкладом возвращаются в топ."
+    2:"Переключение на лето: бейсболка забирает первое место, входят подростковая и панамка.",
+    3:"Топ полностью летний — пик сезона.",
+    5:"Лето ещё в топе, но половина состава уже зимняя: пошли перчатки.",
+    6:"Летнее выключено целиком, весь топ — трикотаж и шапки.",
+    8:"Состав полностью утеплённый: флис, шерсть, синтепон.",
+    11:"Работаем уже на январь — шапки с подкладом вернулись в топ."
   };
 
-  function plural(n, one, few, many){
-    var d10 = n % 10, d100 = n % 100;
-    if (d10 === 1 && d100 !== 11) return one;
-    if (d10 >= 2 && d10 <= 4 && (d100 < 12 || d100 > 14)) return few;
-    return many;
-  }
 
   var adstrip = document.getElementById("adstrip");
   var admonths = document.getElementById("admonths");
 
-  var DAYS = ["31 января","28 февраля","31 марта","30 апреля","31 мая","30 июня",
-              "31 июля","31 августа","30 сентября","31 октября","30 ноября","31 декабря"];
-
   AD_YEAR.forEach(function(mo, i){
-    var prev = AD_YEAR[(i + 11) % 12];
-    var running = prev.items.map(function(it){ return it[0]; });
-    /* стартуем то, чего не было в топе прошлого месяца */
-    var starts = mo.items.filter(function(it){ return running.indexOf(it[0]) === -1; });
     var budget = PLAN[i][1];
     var window = "15 " + ["января","февраля","марта","апреля","мая","июня",
                           "июля","августа","сентября","октября","ноября","декабря"][i]
@@ -791,24 +766,16 @@
     var lab = document.createElement("div");
     lab.className = "mlabel"; lab.textContent = mo.s;
     col.appendChild(lab);
-    var box = document.createElement("div");
-    box.className = "startbox";
-    box.title = mo.m + " — " + (starts.length
-      ? starts.length + " " + plural(starts.length, "старт", "старта", "стартов")
-      : "запусков нет");
-    starts.forEach(function(it){
+    mo.items.forEach(function(it, n){
       var t = document.createElement("div");
       t.className = "tick " + it[1];
       t.dataset.cat = it[1];
-      t.title = "Старт в " + mo.m.toLowerCase() + ": " + it[0];
-      box.appendChild(t);
+      t.title = "Рекламируем в " + mo.m.toLowerCase() + " · " + (n + 1) + ". " + it[0];
+      col.appendChild(t);
     });
-    if (!starts.length){
-      var base = document.createElement("div");
-      base.className = "startbase";
-      box.appendChild(base);
-    }
-    col.appendChild(box);
+    var mk = document.createElement("div");
+    mk.className = "thin-mark solid";
+    col.appendChild(mk);
     adstrip.appendChild(col);
 
     /* карточка */
@@ -817,12 +784,12 @@
 
     var head = document.createElement("header");
     var h = document.createElement("h3"); h.textContent = mo.m;
-    var cnt = document.createElement("span");
-    cnt.className = "cnt" + (starts.length ? "" : " zero");
-    cnt.textContent = starts.length
-      ? starts.length + " " + plural(starts.length, "старт", "старта", "стартов")
-      : "без стартов";
-    head.appendChild(h); head.appendChild(cnt);
+    var mix = document.createElement("div");
+    mix.className = "mix"; mix.title = "состав рекламируемого ассортимента";
+    mo.items.forEach(function(it){
+      var d = document.createElement("span"); d.className = it[1]; mix.appendChild(d);
+    });
+    head.appendChild(h); head.appendChild(mix);
     card.appendChild(head);
 
     var tg = document.createElement("div");
@@ -831,27 +798,20 @@
                  + '<span class="bud">' + budget + '% бюджета</span>';
     card.appendChild(tg);
 
-    if (starts.length){
-      var ol = document.createElement("ol");
-      ol.className = "items";
-      starts.forEach(function(it, n){
-        var li = document.createElement("li");
-        li.className = it[1];
-        li.dataset.cat = it[1];
-        var r = document.createElement("span");
-        r.className = "rank"; r.textContent = (n + 1);
-        var nm = document.createElement("span");
-        nm.className = "name"; nm.textContent = it[0];
-        li.appendChild(r); li.appendChild(nm);
-        ol.appendChild(li);
-      });
-      card.appendChild(ol);
-    } else {
-      var ns = document.createElement("p");
-      ns.className = "nostart";
-      ns.textContent = "Ничего запускать не нужно — работают кампании прошлых месяцев.";
-      card.appendChild(ns);
-    }
+    var ol = document.createElement("ol");
+    ol.className = "items";
+    mo.items.forEach(function(it, n){
+      var li = document.createElement("li");
+      li.className = it[1];
+      li.dataset.cat = it[1];
+      var r = document.createElement("span");
+      r.className = "rank"; r.textContent = (n + 1);
+      var nm = document.createElement("span");
+      nm.className = "name"; nm.textContent = it[0];
+      li.appendChild(r); li.appendChild(nm);
+      ol.appendChild(li);
+    });
+    card.appendChild(ol);
 
     if (AD_NOTE[i]){
       var p = document.createElement("p");
