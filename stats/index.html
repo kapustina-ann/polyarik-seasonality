@@ -222,13 +222,6 @@
     font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;
   }
 
-  .pivot,.thin-note{
-    margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);
-    font-size:12.5px;line-height:1.4;color:var(--ink-2);
-  }
-  .thin-note{font-size:12px;color:var(--muted)}
-  .pivot b{font-weight:600;color:var(--ink)}
-
   .filtered .tick[data-off="1"]{opacity:.13}
   .filtered ol.items li[data-off="1"]{opacity:.28}
 
@@ -574,18 +567,6 @@
       ol.appendChild(li);
     });
     card.appendChild(ol);
-
-    if (mo.pivot){
-      var p = document.createElement("p");
-      p.className = "pivot";
-      p.innerHTML = "<b>Перелом.</b> " + mo.pivot;
-      card.appendChild(p);
-    } else if (mo.thin){
-      var tn = document.createElement("p");
-      tn.className = "thin-note";
-      tn.textContent = "Месяц собран на малом числе заказов — порядок менее устойчив.";
-      card.appendChild(tn);
-    }
     months.appendChild(card);
   });
 
