@@ -593,6 +593,40 @@
      кампании выходят на мощность за 3–5 недель, поэтому в месяце M
      откручивается то, что купят в M+1. Берём тот же YEAR, чтобы
      рекламный план не смог разойтись со статистикой. */
+  /* ---- фильтр по ассортименту ---- */
+  var off = Object.create(null);
+  var root = document.querySelector(".wrap");
+
+  function applyFilter(){
+    var any = false, k;
+    for (k in off) if (off[k]) any = true;
+    root.classList.toggle("filtered", any);
+    /* обе легенды показывают одно состояние — фильтр общий на страницу */
+    var chips = document.querySelectorAll(".chip[data-cat]");
+    for (var c = 0; c < chips.length; c++){
+      chips[c].setAttribute("aria-pressed", off[chips[c].dataset.cat] ? "false" : "true");
+    }
+    var nodes = document.querySelectorAll("[data-cat]");
+    for (var i = 0; i < nodes.length; i++){
+      if (nodes[i].classList.contains("chip")) continue;
+      if (off[nodes[i].dataset.cat]) nodes[i].dataset.off = "1";
+      else delete nodes[i].dataset.off;
+    }
+  }
+
+  ["legend"].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    el.addEventListener("click", function(e){
+      var btn = e.target.closest(".chip");
+      if (!btn) return;
+      var cat = btn.dataset.cat;
+      off[cat] = !off[cat];
+      applyFilter();
+    });
+  });
+
+  /* ---- столбики: новые покупатели ---- */
 })();
 </script>
 </body>
