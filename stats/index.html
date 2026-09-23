@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+<meta name="googlebot" content="noindex, nofollow">
+<meta name="yandex" content="noindex, nofollow">
+<meta name="description" content="Топ-7 товаров по каждому месяцу года на данных заказов Полярика за 2022-2026.">
+<style>
+  :root{
+    color-scheme:light dark;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  body{margin:0}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+</style>
+<title>Сезонный календарь Полярика</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bitter:wght@500;700&family=Onest:wght@400;500;600;700&display=swap">
+<style>
+  :root{
+    --ground:#F1F4F7;
+    --card:#FFFFFF;
+    --ink:#182430;
+    --ink-2:#4A5B6C;
+    --muted:#7B8B9C;
+    --line:#DCE3EA;
+    --line-soft:#E9EEF3;
+
+    /* категориальные — проверены валидатором для светлой темы */
+    --sun:#E08A0A;
+    --sun-soft:#FCF0DB;
+    --mid:#1F9E6E;
+    --mid-soft:#DFF3EC;
+    --frost:#5B63D6;
+    --frost-soft:#E7E8FB;
+    --flat:#9DAEBF;
+    --flat-soft:#EDF1F5;
+
+    --shadow:0 1px 2px rgba(24,36,48,.05), 0 8px 24px -14px rgba(24,36,48,.22);
+    --f-display:"Bitter", Georgia, "Times New Roman", serif;
+    --f-body:"Onest", "Segoe UI", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --ground:#12181F;
+      --card:#1A222B;
+      --ink:#E7EDF3;
+      --ink-2:#B3C0CD;
+      --muted:#8496A6;
+      --line:#2A3540;
+      --line-soft:#232D37;
+      --sun:#C8830F;
+      --sun-soft:#3A2A11;
+      --mid:#189271;
+      --mid-soft:#10302A;
+      --frost:#6F79DC;
+      --frost-soft:#23264A;
+      --flat:#61748A;
+      --flat-soft:#1F2833;
+      --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -14px rgba(0,0,0,.65);
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#12181F;
+    --card:#1A222B;
+    --ink:#E7EDF3;
+    --ink-2:#B3C0CD;
+    --muted:#8496A6;
+    --line:#2A3540;
+    --line-soft:#232D37;
+    --sun:#C8830F;
+    --sun-soft:#3A2A11;
+    --mid:#189271;
+    --mid-soft:#10302A;
+    --frost:#6F79DC;
+    --frost-soft:#23264A;
+    --flat:#61748A;
+    --flat-soft:#1F2833;
+    --shadow:0 1px 2px rgba(0,0,0,.30), 0 8px 24px -14px rgba(0,0,0,.65);
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--f-body);
+    font-size:15px;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding-inline:20px;padding-block:40px 56px}
+
+  .eyebrow{
+    font-size:11.5px;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 14px;
+  }
+  h1{
+    font-family:var(--f-display);font-weight:700;
+    font-size:clamp(30px,5.2vw,46px);line-height:1.08;
+    letter-spacing:-.015em;margin:0 0 22px;text-wrap:balance;
+  }
+  .dek{margin:0;max-width:64ch;color:var(--ink-2);font-size:16px}
+  .dek b{font-weight:600;color:var(--ink)}
+
+  /* ---------- вкладки ---------- */
+  .tabs{
+    display:flex;gap:4px;margin:0 0 30px;padding:4px;
+    background:var(--flat-soft);border-radius:11px;
+    width:fit-content;max-width:100%;flex-wrap:wrap;
+  }
+  .tabs button{
+    appearance:none;border:0;background:transparent;
+    font:inherit;font-size:14.5px;font-weight:600;color:var(--ink-2);
+    padding:9px 18px;border-radius:8px;cursor:pointer;
+    transition:background .15s,color .15s;
+  }
+  .tabs button[aria-selected="true"]{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
+  .tabs button:focus-visible{outline:2px solid var(--frost);outline-offset:2px}
+
+  /* ---------- легенда ---------- */
+  .legend{display:flex;flex-wrap:wrap;gap:8px;margin:26px 0 0;padding:0;border:0}
+  .legend legend{
+    padding:0;font-size:11.5px;font-weight:600;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--muted);margin-bottom:10px;
+  }
+  .chip{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:7px 14px 7px 11px;border:1px solid var(--line);
+    border-radius:999px;background:var(--card);color:var(--ink);
+    font:inherit;font-size:13.5px;font-weight:500;cursor:pointer;
+    transition:opacity .15s;
+  }
+  .chip .swatch{width:11px;height:11px;border-radius:3px;flex:none}
+  .chip[aria-pressed="false"]{opacity:.42}
+  .chip:focus-visible{outline:2px solid var(--frost);outline-offset:2px}
+  .chip.s .swatch{background:var(--sun)}
+  .chip.d .swatch{background:var(--mid)}
+  .chip.w .swatch{background:var(--frost)}
+  .chip .n{color:var(--muted);font-variant-numeric:tabular-nums}
+
+  /* ---------- заголовки секций ---------- */
+  .sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;margin-bottom:14px;
+  }
+  .sec-head h2{
+    font-family:var(--f-display);font-weight:500;font-size:19px;
+    margin:0;letter-spacing:-.01em;
+  }
+  .sec-head p{margin:0;font-size:13.5px;color:var(--muted);max-width:54ch}
+  .sec{margin-top:40px}
+
+  /* ---------- полоса года ---------- */
+  .strip-scroll{overflow-x:auto;padding-bottom:4px}
+  .strip{display:grid;grid-template-columns:repeat(12,minmax(26px,1fr));gap:4px;min-width:340px}
+  .strip-col{display:flex;flex-direction:column;gap:3px}
+  .mlabel{
+    font-size:10.5px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;
+    color:var(--muted);text-align:center;margin-bottom:3px;white-space:nowrap;
+  }
+  .tick{height:17px;border-radius:3px;transition:opacity .15s}
+  .tick.s{background:var(--sun)}
+  .tick.d{background:var(--mid)}
+  .tick.w{background:var(--frost)}
+  .thin-mark{
+    margin-top:6px;height:3px;border-radius:2px;opacity:.55;
+    background:repeating-linear-gradient(90deg,var(--muted) 0 3px,transparent 3px 6px);
+  }
+  .thin-mark.solid{background:none;opacity:0}
+
+  /* ---------- карточки месяцев ---------- */
+  .months{
+    display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));
+    align-items:start;gap:16px;margin-top:22px;
+  }
+  .month{
+    background:var(--card);border:1px solid var(--line-soft);border-radius:12px;
+    padding:16px 16px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;
+  }
+  .month header{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding-bottom:11px;margin-bottom:11px;border-bottom:1px solid var(--line-soft);
+  }
+  .month h3{font-family:var(--f-display);font-weight:700;font-size:19px;margin:0;letter-spacing:-.01em}
+  .mix{display:flex;gap:3px}
+  .mix span{width:7px;height:7px;border-radius:2px}
+  .mix .s{background:var(--sun)}
+  .mix .d{background:var(--mid)}
+  .mix .w{background:var(--frost)}
+
+  ol.items{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px}
+  ol.items li{
+    display:grid;grid-template-columns:20px minmax(0,1fr);gap:10px;align-items:baseline;
+    padding:6px 8px;margin-inline:-8px;border-radius:7px;transition:opacity .15s;
+  }
+  ol.items.with-qty li{grid-template-columns:20px minmax(0,1fr) auto}
+  /* число заказов справа — служебная величина, поэтому текстовым токеном */
+  .qty{
+    font-size:12.5px;font-variant-numeric:tabular-nums;color:var(--ink-2);
+    font-weight:600;text-align:right;white-space:nowrap;
+  }
+  .rank{font-variant-numeric:tabular-nums;font-size:12px;font-weight:600;color:var(--muted);text-align:right}
+  .name{font-size:14px;line-height:1.35;color:var(--ink)}
+  li.s{background:var(--sun-soft)}
+  li.d{background:var(--mid-soft)}
+  li.w{background:var(--frost-soft)}
+
+  /* подпись целевого месяца и доли бюджета в рекламной карточке */
+  .target{
+    display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+    margin:-4px 0 10px;font-size:12.5px;color:var(--muted);
+  }
+  .target .to{color:var(--ink-2)}
+  .target .to b{color:var(--ink);font-weight:600}
+  .target .bud{
+    font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums;white-space:nowrap;
+  }
+
+  .pivot,.thin-note{
+    margin-top:12px;padding-top:11px;border-top:1px dashed var(--line);
+    font-size:12.5px;line-height:1.4;color:var(--ink-2);
+  }
+  .thin-note{font-size:12px;color:var(--muted)}
+  .pivot b{font-weight:600;color:var(--ink)}
+
+  .filtered .tick[data-off="1"]{opacity:.13}
+  .filtered ol.items li[data-off="1"]{opacity:.28}
+
+  /* ---------- плитки с цифрами ---------- */
+  .tiles{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));
+    gap:12px;margin-top:26px;
+  }
+  .tile{
+    background:var(--card);border:1px solid var(--line-soft);border-radius:12px;
+    padding:15px 16px;box-shadow:var(--shadow);
+  }
+  .tile .v{
+    font-family:var(--f-display);font-weight:700;font-size:25px;line-height:1.1;
+    letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--ink);
+  }
+  .tile .k{margin-top:5px;font-size:12.5px;line-height:1.35;color:var(--muted)}
+
+  /* ---------- врезка ---------- */
+  .callout{
+    margin-top:26px;padding:18px 20px;border-radius:12px;
+    background:var(--card);border:1px solid var(--line-soft);
+    border-left:3px solid var(--frost);box-shadow:var(--shadow);
+  }
+  .callout h3{
+    font-family:var(--f-display);font-weight:700;font-size:17px;margin:0 0 8px;letter-spacing:-.01em;
+  }
+  .callout p{margin:0 0 9px;color:var(--ink-2);font-size:14.5px;max-width:70ch}
+  .callout p:last-child{margin-bottom:0}
+  .callout b{color:var(--ink);font-weight:600}
+
+  /* ---------- горизонтальные столбики ---------- */
+  .barchart{
+    margin-top:6px;background:var(--card);border:1px solid var(--line-soft);
+    border-radius:12px;padding:16px 18px;box-shadow:var(--shadow);
+  }
+  .bar-row{
+    display:grid;grid-template-columns:84px 1fr 52px;gap:12px;align-items:center;
+    padding:3px 0;
+  }
+  .bar-row .lab{font-size:13.5px;color:var(--ink-2);white-space:nowrap}
+  .bar-track{height:15px;border-radius:3px;background:var(--flat-soft);overflow:hidden}
+  .bar-fill{height:100%;border-radius:0 4px 4px 0;min-width:2px}
+  .bar-fill.s{background:var(--sun)}
+  .bar-fill.w{background:var(--frost)}
+  .bar-fill.f{background:var(--flat)}
+  .bar-row .val{
+    font-size:13px;font-variant-numeric:tabular-nums;color:var(--ink);
+    text-align:right;font-weight:500;
+  }
+  .bar-note{margin:12px 0 0;font-size:12.5px;color:var(--muted)}
+
+  /* ---------- этапы подготовки ---------- */
+  .pipeline{display:grid;grid-template-columns:repeat(auto-fit,minmax(186px,1fr));gap:12px;margin-top:6px}
+  .stage{
+    background:var(--card);border:1px solid var(--line-soft);border-radius:12px;
+    padding:14px 16px;box-shadow:var(--shadow);position:relative;
+  }
+  .stage .num{
+    font-size:11px;font-weight:700;letter-spacing:.1em;color:var(--frost);
+    text-transform:uppercase;margin-bottom:7px;
+  }
+  .stage .t{font-size:14px;font-weight:500;color:var(--ink);line-height:1.35}
+  .stage .d{
+    margin-top:8px;font-size:13px;font-weight:600;color:var(--ink-2);
+    font-variant-numeric:tabular-nums;
+  }
+  .stage.total{border-color:var(--frost);background:var(--frost-soft)}
+  .stage.total .num{color:var(--frost)}
+
+  /* ---------- календарь работ ---------- */
+  .plan-scroll{overflow-x:auto;padding-bottom:4px}
+  .plan-grid{display:grid;grid-template-columns:repeat(12,minmax(48px,1fr));gap:5px;min-width:620px}
+  .pcol{display:flex;flex-direction:column;align-items:stretch;gap:4px}
+  .pbar-box{height:92px;display:flex;align-items:flex-end}
+  .pbar{width:100%;border-radius:4px 4px 0 0;min-height:3px}
+  .pbar.s{background:var(--sun)}
+  .pbar.w{background:var(--frost)}
+  .pbar.f{background:var(--flat)}
+  .pbud{
+    font-size:11.5px;font-weight:600;text-align:center;color:var(--ink);
+    font-variant-numeric:tabular-nums;
+  }
+  .pphase{
+    font-size:10px;line-height:1.25;text-align:center;color:var(--muted);
+    border-top:1px solid var(--line);padding-top:5px;min-height:34px;
+  }
+  /* метка запуска живёт под столбцом: сверху она бы сбивала общую базовую линию */
+  .pflag{
+    font-size:10px;font-weight:700;text-align:center;color:var(--frost);
+    text-transform:uppercase;letter-spacing:.03em;line-height:1.2;
+  }
+  .pflag:empty{display:none}
+
+  /* ---------- работы по периодам ---------- */
+  .works{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+  .work{
+    display:grid;grid-template-columns:132px 1fr;gap:14px;
+    background:var(--card);border:1px solid var(--line-soft);
+    border-radius:10px;padding:12px 15px;align-items:start;
+  }
+  .work .per{font-size:13px;font-weight:600;color:var(--ink);line-height:1.3}
+  .work .per small{display:block;font-weight:500;color:var(--muted);font-size:11.5px;margin-top:2px}
+  .work .txt{font-size:14px;color:var(--ink-2);line-height:1.45}
+  .work.mark{border-left:3px solid var(--frost)}
+
+  /* ---------- кампании и чеклист ---------- */
+  .cards3{display:grid;grid-template-columns:repeat(auto-fit,minmax(244px,1fr));gap:14px;margin-top:6px;align-items:start}
+  .camp{
+    background:var(--card);border:1px solid var(--line-soft);border-radius:12px;
+    padding:16px;box-shadow:var(--shadow);
+  }
+  .camp h4{font-family:var(--f-display);font-weight:700;font-size:16px;margin:0 0 8px;letter-spacing:-.01em}
+  .camp p{margin:0;font-size:13.5px;color:var(--ink-2);line-height:1.45}
+
+  ol.checklist{margin:6px 0 0;padding:0;list-style:none;counter-reset:c;display:flex;flex-direction:column;gap:10px}
+  ol.checklist li{
+    counter-increment:c;display:grid;grid-template-columns:26px minmax(0,1fr);gap:12px;
+    font-size:14.5px;color:var(--ink-2);line-height:1.45;align-items:start;
+  }
+  ol.checklist li > span{display:block;max-width:76ch}
+  ol.checklist li::before{
+    content:counter(c);
+    font-size:12px;font-weight:700;color:var(--frost);
+    background:var(--frost-soft);border-radius:6px;
+    width:26px;height:26px;display:grid;place-items:center;
+  }
+  ol.checklist b{color:var(--ink);font-weight:600}
+
+  footer.note{
+    margin-top:40px;padding-top:20px;border-top:1px solid var(--line);
+    color:var(--muted);font-size:13px;line-height:1.55;max-width:74ch;
+  }
+  footer.note p{margin:0 0 8px}
+  footer.note p:last-child{margin-bottom:0}
+  footer.note b{color:var(--ink-2);font-weight:600}
+
+  @media (max-width:520px){
+    .wrap{padding-inline:16px;padding-block:28px 40px}
+    .months{grid-template-columns:1fr;gap:12px}
+    .bar-row{grid-template-columns:72px 1fr 46px;gap:9px}
+    .work{grid-template-columns:1fr;gap:6px}
+  }
+  @media (prefers-reduced-motion:reduce){ *{transition:none!important} }
+  @media print{
+    :root{--ground:#fff;--card:#fff;--shadow:none}
+    body{font-size:11px}
+    .wrap{max-width:none;padding:0}
+    .tabs{display:none}
+    [role="tabpanel"][hidden]{display:block!important}
+    .months{grid-template-columns:repeat(3,1fr);gap:10px}
+    .month,.work,.camp,.stage,.tile{break-inside:avoid;box-shadow:none;border-color:#ccd4dc}
+    h1{font-size:26px}
+    *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="eyebrow">Полярик · 11 608 заказов · май 2022 — сентябрь 2026</p>
+  <h1>Сезонный календарь Полярика</h1>
+
+    <p class="dek">Топ-7 товаров по каждому месяцу года — по тому, <b>в скольких заказах</b> товар встретился. Все годы сведены вместе, размерный ряд схлопнут. Цвет показывает, к какому ассортименту относится позиция.</p>
+
+    <fieldset class="legend" id="legend">
+      <legend>Ассортимент</legend>
+      <button type="button" class="chip s" data-cat="s" aria-pressed="true"><span class="swatch"></span>Лето <span class="n" data-count="s"></span></button>
+      <button type="button" class="chip d" data-cat="d" aria-pressed="true"><span class="swatch"></span>Демисезон <span class="n" data-count="d"></span></button>
+      <button type="button" class="chip w" data-cat="w" aria-pressed="true"><span class="swatch"></span>Зима <span class="n" data-count="w"></span></button>
+    </fieldset>
+
+    <section class="sec">
+      <div class="sec-head">
+        <h2>Год одним взглядом</h2>
+        <p>Каждый столбец — месяц, каждая клетка — одна из семи верхних позиций, сверху первое место. Пунктир под столбцом — месяц собран на малом числе заказов.</p>
+      </div>
+      <div class="strip-scroll"><div class="strip" id="strip"></div></div>
+    </section>
+
+    <section class="sec">
+      <div class="sec-head">
+        <h2>Топ-7 по месяцам</h2>
+        <p>Справа — число заказов за все годы, в которых встретился товар.</p>
+      </div>
+      <div class="months" id="months"></div>
+    </section>
+
+    <footer class="note">
+      <p><b>Как считалось.</b> Ранг — число заказов, в которых встретился товар, а не количество проданных штук. Товары сведены без размера: «Бейсболка детская (50-52)» и «(52-54)» — одна позиция. Регистровые дубли названий объединены.</p>
+      <p><b>Чего не хватает в данных.</b> Выгрузки идут с мая 2022 по 22 сентября 2026: у января — апреля нет 2022 года, у октября — декабря нет 2026-го. Месяцы, помеченные пунктиром, собраны на небольшом числе заказов — июнь (383), июль (274), декабрь (164); порядок внутри них менее устойчив.</p>
+      <p>Источник — «Объединённая база заказов.xlsx», лист «Позиции».</p>
+    </footer>
+
+</div>
+
+<script>
+(function(){
+  var CATS = {s:"Лето", d:"Демисезон", w:"Зима"};
+
+  /* Число заказов, в которых встретился товар. Порядок — как в items.
+     STATS — по фактическим датам, AD — по датам со сдвигом на 14 дней назад. */
+  var COUNT_STATS = [
+    [ 476, 270, 248, 226, 218, 186, 147], [ 552, 427, 372, 235, 216, 210, 195],
+    [ 653, 559, 438, 346, 346, 219, 215], [ 983, 712, 638, 594, 477, 440, 430],
+    [ 822, 781, 504, 442, 423, 341, 291], [ 195, 190, 116, 107, 105,  92,  86],
+    [  93,  90,  80,  77,  65,  61,  50], [ 556, 498, 398, 290, 266, 251, 214],
+    [ 611, 457, 432, 397, 315, 312, 297], [ 549, 525, 519, 480, 400, 390, 372],
+    [ 239, 230, 230, 220, 177, 164, 156], [  49,  45,  36,  36,  36,  33,  32]
+  ];
+
+  function qtyCell(n, label){
+    var q = document.createElement("span");
+    q.className = "qty";
+    q.textContent = n.toLocaleString("ru-RU");
+    q.title = label;
+    return q;
+  }
+
+  var YEAR = [
+    {m:"Январь", s:"Янв", items:[
+      ["Шапка детская с х/б подкладом","d"],["Шапка детская","d"],
+      ["Шапка детская, Двойная","d"],["Комплект детский, с х/б подкладом","d"],
+      ["Перчатки детские","w"],["Перчатки детские, шерсть","w"],
+      ["Комплект трикотажный, Двойной","d"]]},
+    {m:"Февраль", s:"Фев", items:[
+      ["Шапка детская с х/б подкладом","d"],["Шапка детская","d"],
+      ["Шапка детская, Двойная","d"],["Комплект детский, с х/б подкладом","d"],
+      ["Перчатки детские","w"],["Перчатки детские, шерсть","w"],
+      ["Комплект трикотажный, Двойной","d"]]},
+    {m:"Март", s:"Мар", pivot:"Лето входит в топ: бейсболка на третьем месте, шапочка на шестом.", items:[
+      ["Шапка детская","d"],["Шапка детская, Двойная","d"],
+      ["Бейсболка детская","s"],["Комплект трикотажный, Двойной","d"],
+      ["Шапка детская с х/б подкладом","d"],["Шапочка детская","s"],
+      ["Перчатки детские","w"]]},
+    {m:"Апрель", s:"Апр", pivot:"Разворот на лето — шесть позиций из семи солнцезащитные.", items:[
+      ["Бейсболка детская","s"],["Панамка детская","s"],
+      ["Бейсболка подростковая","s"],["Косынка детская","s"],
+      ["Шапка детская","d"],["Повязка детская","s"],
+      ["Шапочка детская","s"]]},
+    {m:"Май", s:"Май", items:[
+      ["Бейсболка детская","s"],["Панамка детская","s"],
+      ["Косынка детская","s"],["Кепочка детская","s"],
+      ["Бейсболка подростковая","s"],["Шапочка детская","s"],
+      ["Шляпка детская","s"]]},
+    {m:"Июнь", s:"Июн", thin:true, items:[
+      ["Панамка детская","s"],["Бейсболка детская","s"],
+      ["Косынка детская","s"],["Шляпка детская","s"],
+      ["Бейсболка подростковая","s"],["Шапка детская","d"],
+      ["Кепочка детская","s"]]},
+    {m:"Июль", s:"Июл", pivot:"Лето уходит из топа целиком: оптовики уже берут зиму.", thin:true, items:[
+      ["Шапка детская","d"],["Шапка детская, Двойная","d"],
+      ["Комплект трикотажный, Двойной","d"],["Перчатки детские, шерсть","w"],
+      ["Перчатки детские","w"],["Шапка детская с х/б подкладом","d"],
+      ["Перчатки подростковые, шерсть","w"]]},
+    {m:"Август", s:"Авг", items:[
+      ["Шапка детская с х/б подкладом","d"],["Шапка детская, Двойная","d"],
+      ["Шапка детская","d"],["Комплект трикотажный, Двойной","d"],
+      ["Перчатки детские, шерсть","w"],["Перчатки детские","w"],
+      ["Комплект детский, с х/б подкладом","d"]]},
+    {m:"Сентябрь", s:"Сен", pivot:"Трикотаж уступает утеплённому: флис, шерсть, варежки.", items:[
+      ["Шапка детская с х/б подкладом","d"],["Перчатки детские, шерсть","w"],
+      ["Шапка детская, подклад флис","w"],["Перчатки детские","w"],
+      ["Варежки детские, двойные, шерсть","w"],["Шапка подростковая, подклад флис","w"],
+      ["Комплект детский, с х/б подкладом","d"]]},
+    {m:"Октябрь", s:"Окт", items:[
+      ["Шапка детская, подклад флис","w"],["Шапка детская, утеплитель синтепон","w"],
+      ["Варежки детские, двойные, шерсть","w"],["Комплект детский, утеплитель синтепон","w"],
+      ["Комплект детский, подклад флис","w"],["Комплект подростковый, подклад флис","w"],
+      ["Шапка подростковая, подклад флис","w"]]},
+    {m:"Ноябрь", s:"Ноя", items:[
+      ["Шапка детская, подклад флис","w"],["Комплект детский, утеплитель синтепон","w"],
+      ["Шапка детская, утеплитель синтепон","w"],["Варежки детские, двойные, шерсть","w"],
+      ["Комплект детский, подклад флис","w"],["Перчатки детские из плащевки","w"],
+      ["Варежки детские из плащевки","w"]]},
+    {m:"Декабрь", s:"Дек", thin:true, items:[
+      ["Варежки детские из плащевки","w"],["Варежки детские, двойные, шерсть","w"],
+      ["Комплект детский, подклад флис","w"],["Комплект детский, утеплитель синтепон","w"],
+      ["Шапка детская, подклад флис","w"],["Перчатки детские из плащевки","w"],
+      ["Шапка детская, утеплитель синтепон","w"]]}
+  ];
+
+  /* Топ-5 на данных, сдвинутых на 14 дней назад: дата каждого заказа
+     уменьшена на две недели и месяцы пересобраны заново. Бакет месяца M
+     собирает спрос с 15-го числа M по 14-е число M+1 — то, что успевает
+     поймать кампания, стартовавшая в начале M. */
+  /* ---- счётчики в легендах: сколько мест из 60 держит каждый ассортимент ---- */
+  function fillCounts(data, attr){
+    var tally = {s:0, d:0, w:0};
+    data.forEach(function(mo){ mo.items.forEach(function(it){ tally[it[1]]++; }); });
+    Object.keys(tally).forEach(function(k){
+      var el = document.querySelector('[' + attr + '="' + k + '"]');
+      if (el) el.textContent = tally[k];
+    });
+  }
+  fillCounts(YEAR, "data-count");
+
+  /* ---- полоса года ---- */
+  var strip = document.getElementById("strip");
+  YEAR.forEach(function(mo){
+    var col = document.createElement("div");
+    col.className = "strip-col";
+    var lab = document.createElement("div");
+    lab.className = "mlabel"; lab.textContent = mo.s;
+    col.appendChild(lab);
+    mo.items.forEach(function(it,i){
+      var t = document.createElement("div");
+      t.className = "tick " + it[1];
+      t.dataset.cat = it[1];
+      t.title = mo.m + " · " + (i+1) + ". " + it[0] + " — " + CATS[it[1]];
+      col.appendChild(t);
+    });
+    var mark = document.createElement("div");
+    mark.className = "thin-mark" + (mo.thin ? "" : " solid");
+    if (mo.thin) mark.title = mo.m + " — мало заказов, порядок менее устойчив";
+    col.appendChild(mark);
+    strip.appendChild(col);
+  });
+
+  /* ---- карточки месяцев ---- */
+  var months = document.getElementById("months");
+  YEAR.forEach(function(mo, mi){
+    var card = document.createElement("article");
+    card.className = "month";
+    var head = document.createElement("header");
+    var h = document.createElement("h3"); h.textContent = mo.m;
+    var mix = document.createElement("div");
+    mix.className = "mix"; mix.title = "состав топ-7 по ассортименту";
+    mo.items.forEach(function(it){
+      var d = document.createElement("span"); d.className = it[1]; mix.appendChild(d);
+    });
+    head.appendChild(h); head.appendChild(mix); card.appendChild(head);
+
+    var ol = document.createElement("ol");
+    ol.className = "items with-qty";
+    mo.items.forEach(function(it,i){
+      var li = document.createElement("li");
+      li.className = it[1]; li.dataset.cat = it[1];
+      var r = document.createElement("span"); r.className = "rank"; r.textContent = (i+1);
+      var n = document.createElement("span"); n.className = "name"; n.textContent = it[0];
+      li.appendChild(r); li.appendChild(n);
+      li.appendChild(qtyCell(COUNT_STATS[mi][i],
+        "заказов в " + mo.m.toLowerCase() + " с этим товаром"));
+      ol.appendChild(li);
+    });
+    card.appendChild(ol);
+
+    if (mo.pivot){
+      var p = document.createElement("p");
+      p.className = "pivot";
+      p.innerHTML = "<b>Перелом.</b> " + mo.pivot;
+      card.appendChild(p);
+    } else if (mo.thin){
+      var tn = document.createElement("p");
+      tn.className = "thin-note";
+      tn.textContent = "Месяц собран на малом числе заказов — порядок менее устойчив.";
+      card.appendChild(tn);
+    }
+    months.appendChild(card);
+  });
+
+  /* ---- рекламный календарь: сдвиг на месяц вперёд ----
+     кампании выходят на мощность за 3–5 недель, поэтому в месяце M
+     откручивается то, что купят в M+1. Берём тот же YEAR, чтобы
+     рекламный план не смог разойтись со статистикой. */
+})();
+</script>
+</body>
+</html>
